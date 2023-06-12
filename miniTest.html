@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* styles for screens smaller than 768px */
+@media (max-width: 767px) {
+  .largeContainer {
+    width: 100%;
+    
+  }
+  .container {
+    width: 100%;
+    margin-right: 0;
+  }
+  .sphere {
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+  }
+  .egg {
+    width: 35px;
+    height: 45px;
+    font-size: 25px;
+  }
+  .display-board {
+    width: 100%;
+  }
+}
+.sphere.disabled {
+  opacity: 0.5;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* styles for screens larger than 768px */
+@media (min-width: 768px) {
+  .largeContainer {
+    max-width: 1366px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .container {
+    width: 700px;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  .sphere {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+  }
+  .egg {
+    width: 45px;
+    height: 58px;
+    font-size: 35px;
+  }
+  .display-board {
+    width: 685px;
+  }
+}
+
+    body {
+      background-color: rgb(56, 47, 47);
+      max-width: 1366px;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+
+    }
+    .largeContainer {
+  
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    }
+
+    #right-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    margin: 10px;
+    background-color: inherit;
+    color: whitesmoke;
+    font-size: 18px;
+    border-color: whitesmoke;
+    border-radius: 5px;
+}
+.container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: rgb(78, 5, 33);
+  margin-right: 0;
+  margin-top: 10px;
+}
+
+.sphere:nth-child(1) {
+  background-color: yellow;
+}
+
+.sphere:nth-child(2) {
+  background-color: blue;
+}
+
+.sphere:nth-child(3) {
+  background-color: red;
+}
+
+.sphere:nth-child(4) {
+  background-color: rgb(71, 1, 71);
+}
+
+.sphere:nth-child(5) {
+  background-color: orangered;
+}
+
+.sphere:nth-child(6) {
+  background-color: green;
+}
+
+.sphere:nth-child(7) {
+  background-color: teal;
+}
+
+.sphere:nth-child(8) {
+  background-color: black;
+}
+
+.sphere:nth-child(9) {
+  background-color: hotpink;
+}
+
+.sphere:nth-child(10) {
+  background-color: rgb(3, 3, 158);
+}
+
+.sphere:nth-child(11) {
+  background-color: lightcoral;
+}
+
+.sphere:nth-child(12) {
+  background-color: lightgray;
+}
+
+.sphere:nth-child(13) {
+  background-color: lightgreen;
+}
+
+.sphere:nth-child(14) {
+  background-color: lightpink;
+}
+
+.sphere:nth-child(15) {
+  background-color:purple;
+}
+
+.sphere {
+  
+  height: 100px;
+  border-radius: 50% 50% 50% 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+.egg {
+ 
+  background-color: whitesmoke;
+  border-radius: 50% 50% 50% 50%;
+  text-align: center;
+  color: black;
+}
+.sideplace {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+}
+.sideplace > * {
+  margin-right: 10px;
+}
+#addScore {
+  color: rgb(6, 243, 6);
+}
+#decrementScore {
+  color: rgb(248, 2, 2);
+}
+
+.plus,
+      .minus {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        justify-content: center;
+        width: 30px;
+        height: 20px;
+        background-color: inherit;
+        border: 1px solid whitesmoke;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 40px;
+        padding: 10px 20px;
+      }
+
+      .nxt {
+        background-color: inherit;
+        color: white;
+        padding: 10px 20px;
+        border: 1px solid whitesmoke;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      .display-board {
+        width: 685px;
+        background-color: rgb(78, 5, 33);
+        border-radius: 4px;
+        padding-left: 15px;
+        color: whitesmoke;
+      }
+  #item-value {
+    display: inline-block;
+    margin-right: 20px;
+    color: whitesmoke;
+
+  }
+  #myPopup {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 290px;
+  height: 100%;
+  background-color: inherit;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-out;
+}
+
+#myPopup.active {
+  right: 0;
+}
+#closeButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 40px;
+  color: rgb(255, 22, 22);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.popupName {
+  color: whitesmoke;
+}
+#popupContent {
+  border: 1px solid whitesmoke;
+  border-radius: 7px;
+  width: 80%;
+}
+.popupHeader {
+  color: whitesmoke;
+  padding-left: 20px;
+}
+.centrAlgn{
+  text-align: center;
+}
+.scoreHdr{
+  background-color: green;
+  color: whitesmoke;
+  font-size: 16px;
+  height: 23px;
+}
+.submtbtn {
+    float: right;
+    margin-top: 5%;
+    margin-right: 20%;
+    background-color: green;
+    color: whitesmoke;
+    font-size: 16px;
+    border: none;
+    width: 70px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="largeContainer">
+    <button id="right-button" onclick="updatePopup()"> <<< </button>
+
+    <div colspan="10" class="display-board"><p id="display-players"></p>
+      <input class="display-box" type="text" id="result" disabled /> </div>
+    <div class="container">
+      <button class="sphere" type="button" value="1" onclick="displayresults('16')">
+        <div class="egg">1</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('17')">
+        <div class="egg">2</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('6')">
+        <div class="egg">3</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('4')">
+        <div class="egg">4</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('5')">
+        <div class="egg">5</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('6')">
+        <div class="egg">6</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('7')">
+        <div class="egg">7</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('8')">
+        <div class="egg">8</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('9')">
+        <div class="egg">9</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('10')">
+        <div class="egg">10</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('11')">
+        <div class="egg">11</div>
+        
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('12')">
+        <div class="egg">12</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('13')">
+        <div class="egg">13</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('14')">
+        <div class="egg">14</div>
+      </button>
+      <button class="sphere" type="button" value="1" onclick="displayresults('15')">
+        <div class="egg">15</div>
+      </button>          
+    </div>
+    <div class="sideplace">
+      <div class="plus" type="button" id="addScore" onclick="display('+')">+</div>
+      <div class="minus" type="button" id="decrementScore" onclick="display('-')">—</div>
+      <button class="nxt" type="button" value="=" onclick="calculate()" id="btn">Wasted</button>
+      <button class="nxt" type="button" value=" " onclick="clearScreen()" id="next-button">Next</button>
+    </div>
+    <script>
+        function displayresults(value) {
+    document.getElementById("result").value += value;
+}
+  
+
+      // This function evaluates the expression and returns result
+function calculate() {
+    var p = document.getElementById("result").value;
+    var q = eval(p);
+    document.getElementById("result").value = q;
+}
+// This function clear all the values
+function clearScreen() {
+    document.getElementById("result").value = "";
+}
+// Retrieve existing array from local storage, or create an empty array if no array is found
+const myArray = JSON.parse(localStorage.getItem('myArray')) || [];
+
+// Get the display, input, and button elements
+const display = document.getElementById('display-players');
+const result = document.getElementById('result');
+const addScore = document.getElementById('addScore');
+const decrementScore = document.getElementById('decrementScore');
+const btn = document.getElementById('btn');
+const nextButton = document.getElementById('next-button');
+
+let index = 0;
+
+// Function to display the name and score at the current index
+function displayPlayer() {
+  const player = myArray[index];
+  display.innerText = `${player.name}: ${player.score}`;
+  result.value = 0;
+}
+
+// Add event listeners to increment and decrement the score
+addScore.addEventListener('click', function() {
+  const player = myArray[index];
+  player.score += Number(result.value);
+  localStorage.setItem('myArray', JSON.stringify(myArray));
+  displayPlayer();
+});
+
+decrementScore.addEventListener('click', function() {
+  const player = myArray[index];
+  player.score -= Number(result.value);
+  localStorage.setItem('myArray', JSON.stringify(myArray));
+  displayPlayer();
+});
+
+// Add event listener to update the array with the new scores
+btn.addEventListener('click', function() {
+  const player = myArray[index];
+  player.score = Number(display.innerText.split(':')[1].trim());
+  localStorage.setItem('myArray', JSON.stringify(myArray));
+});
+
+// Add event listener to display the next player when button is clicked
+nextButton.addEventListener('click', function() {
+  index = (index + 1) % myArray.length;
+  displayPlayer();
+});
+
+// Call displayPlayer function to display the first player
+displayPlayer();
+
+let sphereButtons = document.querySelectorAll('.sphere');
+let plusButton = document.querySelector('.plus');
+let btnBlur = document.querySelector('#btn');
+
+let selectedSphere = null;
+
+sphereButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (button === selectedSphere) {
+      return;
+    }
+    selectedSphere = button;
+  });
+});
+
+plusButton.addEventListener('click', () => {
+  if (selectedSphere) {
+    selectedSphere.disabled = true;
+    selectedSphere.style.filter = "blur(3px)";
+  }
+});
+btnBlur.addEventListener('click', () => {
+  if (selectedSphere) {
+    selectedSphere.disabled = true;
+    selectedSphere.style.filter = "blur(3px)";
+  }
+});
+
+
+    </script>
+  </div>
+  <div id="myPopup">
+    <button id="closeButton">&times;</button><br><br>
+    <h2 class="popupHeader">Score Countdown</h2>
+    <form action="" id="player">
+    <table id="popupContent">
+      <thead class="scoreHdr">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="fire" >
+        <!-- Table rows with data can be added here -->
+      </tbody>
+    </table>
+    <button class="submtbtn" type="submit">Submit</button>
+  </form>
+  </div>
+  <script>
+    const rightButton = document.getElementById('right-button');
+    const myPopup = document.getElementById('myPopup');
+
+    rightButton.addEventListener('click', () => {
+    myPopup.classList.toggle('active');
+  });
+    closeButton.addEventListener('click', () => {
+      myPopup.classList.remove('active');
+    });
+
+  function updatePopup() {
+    // Retrieve existing array from local storage, or create an empty array if no array is found
+    const myArray = JSON.parse(localStorage.getItem('myArray')) || [];
+
+    // Generate HTML markup for each player and their score
+    const content = myArray.map((player, index) => {
+      return `<tr class="popupName"><td id="position" class= "centrAlgn">${index + 1}</td>. <td id="name" class= "centrAlgn">${player.name}</td>: <td id="score" class= "centrAlgn">${player.score}</td></tr>`;
+    }).join('');
+
+    // Update the content of the "popupContent" element with the generated HTML markup
+    document.getElementById('fire').innerHTML = content;
+  }
+  
+  // Call the updatePopup function whenever you want to update the content of the "myPopup" element
+  updatePopup();
+  
+
+  </script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+  const firebaseConfig = {
+  apiKey: "AIzaSyD0EZYt7TlctquuAc9uAHX2_TzWETh_K_M",
+  authDomain: "playerscores-712bc.firebaseapp.com",
+  databaseURL: "https://playerscores-712bc-default-rtdb.firebaseio.com",
+  projectId: "playerscores-712bc",
+  storageBucket: "playerscores-712bc.appspot.com",
+  messagingSenderId: "910430751374",
+  appId: "1:910430751374:web:d6905a4d725e2ed9a557df",
+  measurementId: "G-0G36278VLN"
+};
+  
+firebase.initializeApp(firebaseConfig);
+
+// Retrieve player data from local storage
+var playerData = localStorage.getItem('myArray');
+
+// Check if player data exists in local storage
+if (playerData) {
+  playerData = JSON.parse(playerData); // Parse the JSON string back into an object
+  submitToFirebase(playerData); // Submit the existing data to Firebase
+} else {
+  // Handle the case when player data is not found in local storage
+  console.log('Player data not found in local storage');
+}
+
+// Function to submit data to Firebase
+function submitToFirebase(playerData) {
+  // Get a reference to the 'players' node in the Firebase Realtime Database
+  var playersDB = firebase.database().ref('players');
+
+  // Generate a unique key for the player data
+  var newPlayerRef = playersDB.push();
+
+  // Set the player data under the generated key
+  newPlayerRef.set(playerData)
+    .then(function() {
+      
+      console.log('Data submitted to Firebase successfully!');
+    })
+    .catch(function(error) {
+      console.error('Error submitting data to Firebase:', error);
+    });
+}
+</script>
+</body>
+
+</html>

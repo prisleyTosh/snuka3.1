@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Add players</title>
+    <meta charset="UTF-8">
+    <title>add players</title>
+    <style>
+/* Media queries for screens less than 768px */
+@media (max-width: 768px) {
+        .inputnames {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        
+        .inputnames input[type="text"] {
+          margin-right: 0;
+          margin-bottom: 10px;
+          width: 20%;
+          height: 20px;
+        }
+      }
+      
+      /* Media queries for screens less than 600px */
+      @media (max-width: 600px) {
+        #nextButton {
+          width: 80px;
+          height: 30px;
+          font-size: 14px;
+        }
+      }
+      body {
+            background-color: rgb(82, 74, 74);
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+
+                    
+            }
+      .display-box {
+        margin-top: 20px;
+        padding: 20px;
+        opacity: 0.8;  
+        text-align: left;
+        background-color:inherit;
+        color: whitesmoke;
+        list-style-type: none;
+          
+        }
+        #nextButton {
+
+            background-color: inherit;
+            border-color: whitesmoke;
+            border-radius: 5px;
+            width: 50px;
+            text-align: center;
+            color: whitesmoke;
+            margin-left: 200px;
+        }
+        #username {
+          border: none;
+          background-color: inherit;
+          color: white;
+          font-family: Arial, sans-serif;
+          text-align: center;
+          width: 180px;
+          margin-right: 20px;
+          margin-bottom: 20px;
+        }
+        #add-button {
+          background-color: inherit;
+          color: whitesmoke;
+          padding-left: 10px;
+          border-radius: 5px;
+          width: 40px;
+          height: 20px;
+          border-color: whitesmoke;
+        }
+        #player-form {
+          border: 1px solid whitesmoke;
+          border-radius: 8px;
+          padding: 10px;
+          width: 80%;
+          height: auto;
+        }
+       .textDec {
+        color: whitesmoke;
+       }
+       
+      
+      
+    </style>
+  </head>
+  <body>
+    <script>
+      localStorage.clear();
+    </script>
+    <form id="player-form">
+      <h1 class="textDec">Player Names:</h1>
+      <div class="display-box" id="display"></div>
+
+      <div class="inputnames">
+      <input type="text" id="username" placeholder="Enter Name">
+      <button type="submit" onclick="addAndDisplayUsername()" id="add-button">√</button>
+    </div>      
+      <button type="submit" id="nextButton">Next</button><br><br>
+    </form>
+    
+    <script>
+      // Retrieve existing array from local storage, or create an empty array if no array is found
+      const myArray = JSON.parse(localStorage.getItem('myArray')) || [];
+
+      // Get the form and list elements
+      const myForm = document.getElementById('player-form');
+      const myList = document.getElementById('display');
+
+      // Add event listener to the form
+      myForm.addEventListener('submit', function(event) {
+      // Prevent form submission
+      event.preventDefault();
+
+      // Get input value
+      const newItemInput = document.getElementById('username');
+      const newItemValue = newItemInput.value;
+
+      // Add new item to array
+      myArray.push({ name: newItemValue, score: 0 });
+
+      // Store the updated array in local storage
+      localStorage.setItem('myArray', JSON.stringify(myArray));
+
+      // Add new item to list
+      const newItem = document.createElement('li');
+      newItem.innerText = newItemValue;
+      myList.appendChild(newItem);
+
+      // Clear input field
+      newItemInput.value = '';
+      });
+        document.getElementById("nextButton").addEventListener("click", function() {
+        window.location.href = "miniTest.html";
+});
+
+
+  </script>
+  </body>
+</html>

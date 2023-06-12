@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Table styling */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Remove default list styling */
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <script type="module">
+      
+    // Initialize Firebase
+  const firebaseConfig = {
+  apiKey: "AIzaSyD0EZYt7TlctquuAc9uAHX2_TzWETh_K_M",
+  authDomain: "playerscores-712bc.firebaseapp.com",
+  databaseURL: "https://playerscores-712bc-default-rtdb.firebaseio.com",
+  projectId: "playerscores-712bc",
+  storageBucket: "playerscores-712bc.appspot.com",
+  messagingSenderId: "910430751374",
+  appId: "1:910430751374:web:d6905a4d725e2ed9a557df",
+  measurementId: "G-0G36278VLN"
+};
+  
+firebase.initializeApp(firebaseConfig);
+      
+
+  //*************************Retrieve data once***************************//
+// Assuming you have already initialized Firebase SDK and obtained a reference to the database
+
+function fetchDataFromFirebase() {
+  const databaseRef = firebase.database().ref('players'); // Replace '/path/to/data' with the actual path to your data in the database
+
+  databaseRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+
+    var tableBody = document.getElementById('table-body');
+
+    // Clear existing table body content
+    tableBody.innerHTML = '';
+
+    // Process the retrieved data here
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const value = data[key];
+
+        // Check if the value is an array
+        if (Array.isArray(value)) {
+          // Process the array
+          value.forEach((item) => {
+            // Create a new row in the table
+            const newRow = document.createElement('tr');
+
+            // Create a new cell for name
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.name;
+            newRow.appendChild(nameCell);
+
+            // Create a new cell for score
+            const scoreCell = document.createElement('td');
+            scoreCell.textContent = item.score;
+            newRow.appendChild(scoreCell);
+
+            // Append the row to the table body
+            tableBody.appendChild(newRow);
+          });
+        } else if (typeof value === 'object') {
+          // Process the object
+          for (const innerKey in value) {
+            if (value.hasOwnProperty(innerKey)) {
+              const innerValue = value[innerKey];
+
+              // Create a new row in the table for each inner value
+              const newRow = document.createElement('tr');
+
+              // Create a new cell for the inner key
+              const innerKeyCell = document.createElement('td');
+              innerKeyCell.textContent = innerKey;
+              newRow.appendChild(innerKeyCell);
+
+              // Create a new cell for the inner value
+              const innerValueCell = document.createElement('td');
+              innerValueCell.textContent = innerValue;
+              newRow.appendChild(innerValueCell);
+
+              // Append the row to the table body
+              tableBody.appendChild(newRow);
+            }
+          }
+        } else {
+          // Create a new row in the table for other types of values
+          const newRow = document.createElement('tr');
+
+          // Create a new cell for the value
+          const valueCell = document.createElement('td');
+          valueCell.textContent = value;
+          newRow.appendChild(valueCell);
+
+          // Append the row to the table body
+          tableBody.appendChild(newRow);
+        }
+      }
+    }
+  },
+  (error) => {
+    console.error('Failed to fetch data:', error);
+  });
+}
+  window.onload = fetchDataFromFirebase();
+</script>
+  </body>
+</html>
