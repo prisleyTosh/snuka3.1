@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
-      /* Table styling */
-      table {
-        border-collapse: collapse;
-        width: 100%;
+         /* Additional custom styles */
+         body {
+        background-color: black;
+        padding-top: 20px;
+      }
+
+      .table-container {
+        margin: 0 auto;
+        max-width: 800px;
+      }
+
+      .table-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .table {
         font-family: Arial, sans-serif;
+        color: whitesmoke;
       }
 
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
+      .table thead th {
+        background-color: green;
+        font-weight: bold;
+        text-align: center;
       }
 
-      th {
-        background-color: #f2f2f2;
-      }
-
-      /* Remove default list styling */
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      .table tbody td { 
+        text-align: center;
       }
     </style>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
@@ -32,16 +42,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
   </head>
   <body>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
-
+    <div class="container">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th>Pos</th>
+              <th>Name</th>
+              <th>Scores</th>
+              <th>Games</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
     <script type="module">
       
     // Initialize Firebase
@@ -61,9 +76,8 @@ firebase.initializeApp(firebaseConfig);
 
   //*************************Retrieve data once***************************//
 // Assuming you have already initialized Firebase SDK and obtained a reference to the database
-
 function fetchDataFromFirebase() {
-  const databaseRef = firebase.database().ref('players'); // Replace '/path/to/data' with the actual path to your data in the database
+  const databaseRef = firebase.database().ref('players');
 
   databaseRef.on('value', (snapshot) => {
     const data = snapshot.val();
@@ -73,6 +87,8 @@ function fetchDataFromFirebase() {
     // Clear existing table body content
     tableBody.innerHTML = '';
 
+    const nameData = {};
+
     // Process the retrieved data here
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
@@ -80,23 +96,20 @@ function fetchDataFromFirebase() {
 
         // Check if the value is an array
         if (Array.isArray(value)) {
-          // Process the array
           value.forEach((item) => {
-            // Create a new row in the table
-            const newRow = document.createElement('tr');
+            const position = 0;
+            const name = item.name;
+            const score = item.score;
 
-            // Create a new cell for name
-            const nameCell = document.createElement('td');
-            nameCell.textContent = item.name;
-            newRow.appendChild(nameCell);
+            if (!nameData.hasOwnProperty(name)) {
+              nameData[name] = {
+                score: 0,
+                games: 0
+              };
+            }
 
-            // Create a new cell for score
-            const scoreCell = document.createElement('td');
-            scoreCell.textContent = item.score;
-            newRow.appendChild(scoreCell);
-
-            // Append the row to the table body
-            tableBody.appendChild(newRow);
+            nameData[name].score += score;
+            nameData[name].games++;
           });
         } else if (typeof value === 'object') {
           // Process the object
@@ -135,12 +148,52 @@ function fetchDataFromFirebase() {
         }
       }
     }
-  },
-  (error) => {
+
+    // Sort nameData based on scores in descending order
+    const sortedNameData = Object.entries(nameData).sort((a, b) => b[1].score - a[1].score);
+
+    let position = 1;
+    // Iterate over the sorted nameData and create rows for each name
+    for (const [name, nameInfo] of sortedNameData) {
+      // Create a new row in the table
+      const newRow = document.createElement('tr');
+
+      // Create a new cell for Position
+      const positionCell = document.createElement('td');
+      positionCell.textContent = position;
+      newRow.appendChild(positionCell);
+
+      // Create a new cell for name
+      const nameCell = document.createElement('td');
+      nameCell.textContent = name;
+      newRow.appendChild(nameCell);
+
+      // Create a new cell for score
+      const scoreCell = document.createElement('td');
+      scoreCell.textContent = nameInfo.score;
+      newRow.appendChild(scoreCell);
+
+      // Create a new cell for Games
+      const gamesCell = document.createElement('td');
+      gamesCell.textContent = nameInfo.games;
+      newRow.appendChild(gamesCell);
+
+      // Append the row to the table body
+      tableBody.appendChild(newRow);
+
+      position++;
+    }
+  }, (error) => {
     console.error('Failed to fetch data:', error);
   });
 }
+
   window.onload = fetchDataFromFirebase();
 </script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
   </body>
 </html>
