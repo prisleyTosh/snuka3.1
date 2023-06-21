@@ -40,10 +40,34 @@
       height: 8vh;
 
     }
+    
+    #display-players{
+      border: 1px solid black;
+      width: 200px;
+      padding: 10px;
+      font-size: 18px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
     .lower-section{
       background-color: yellow;
       width: 305px;
       height: 9vh;
+      display: flex;
+    }
+    
+    .display-box{
+      
+      flex: 1;
+      width: 50px;
+      border: 1px solid black;
+      margin: 5px;
+
+    }
+    .numberDisplay{
+      flex:2;
+      width: 100px;
+      border: 1px solid black;
+      margin: 5px;
     }
     .balls {
       padding: 5px;
@@ -67,6 +91,12 @@
       border: 1px solid black;
       width: 262px;
       height: 16.5vh;
+      flex-direction: row;
+      display: flex;
+    }
+    .fixed-ball{
+      border: 1px solid black;
+      width: 64px;
     }
     .sideplace{
       flex: 2;
@@ -84,6 +114,8 @@
 
 
     }
+    
+
     footer {
       color: whitesmoke;
       width: 320px;
@@ -91,7 +123,7 @@
       padding: 5px;
       text-align: center;
       position: fixed;
-      top: 90vh;
+      top: 93vh;
       bottom: 0;
 
     }
@@ -100,15 +132,40 @@
 <body>
   <main>
     <section class="display-board">
-      <div class="top-section"></div>
-      <div class="lower-section"></div>
+      <div class="top-section">
+        <p id="display-players">Prisley : 20</p>
+      </div>
+      <div class="lower-section">
+        <div class="display-box"></div>
+        <div class="numberDisplay"></div>
+      </div>
     </section>
     <div class="balls">
       <div class="container">
-        <div class="row"></div>
-        <div class="row"></div>
-        <div class="row"></div>
-        <div class="row"></div>
+        <div class="row">
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+        </div>
+        <div class="row">
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+        </div>
+        <div class="row">
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+        </div>
+        <div class="row">
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+          <div class="fixed-ball"></div>
+        </div>
       </div>
       <div class="sideplace">
         <div class="oparatus"></div>
